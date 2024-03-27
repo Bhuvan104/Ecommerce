@@ -167,6 +167,9 @@ const UserController = {
         phone: [],
     };
     Object.entries(validationRules).forEach(([field, rules]) => {
+      if (rules.required && req.body[field][0]==" " || req.body[field][-1]==" ") {
+        errors[field].push(`${field} should not start or end with space`);
+    }
       if (rules.required && !req.body[field]) {
           errors[field].push(`${field} is required`);
       }
