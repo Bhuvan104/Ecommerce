@@ -1,0 +1,21 @@
+name: Merge to Main
+
+on:
+  push:
+    branches:
+      - devlop
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge to main
+        run: |
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "Your Name"
+          git fetch origin devlop
+          git merge origin/devlop --no-ff --no-edit
+          git push origin main
