@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 router.get('/addresses-orders',  userController.getUsers_add_orders);
+router.get('/addresses-orders-product',  userController.getUsers_add_orders_product);
 router.post('/:userId/address', userController.createAddressForUser);
 // Create a new user
 router.post('/',authMiddleware, userController.createUser);
