@@ -134,9 +134,66 @@ const UserController = {
   async createUser(req, res) {
     try {
       
+      const { firstName, lastName, email, phone, password } = req.body;
+      const validationRules = {
+        firstName: {
+            required: true,
+            maxLength: 50,
+            pattern: /^[a-zA-Z0-9\s]*$/,
+            message: 'Invalid name, only letters, numbers, and spaces are allowed'
+        },
+        lastName: {
+          required: true,
+          maxLength: 50,
+          pattern: /^[a-zA-Z0-9\s]*$/,
+          message: 'Invalid name, only letters, numbers, and spaces are allowed'
+      },
+        email: {
+            required: true,
+            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Invalid email address',
+            minLength: 10,
+        },
+        phone: {
+            required: true,
+            pattern: /^[0-9]{10}$/,
+            message: 'Invalid phone number, must be 10 digits'
+        }
+    };
+      const errors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phone: [],
+    };
+    Object.entries(validationRules).forEach(([field, rules]) => {
+      if (rules.required && !req.body[field]) {
+          errors[field].push(`${field} is required`);
+      }
+      if (rules.minLength && req.body[field] && req.body[field].length < rules.minLength) {
+          errors[field].push(`${field} must be at least ${rules.minLength} characters`);
+      }
+      if (rules.maxLength && req.body[field] && req.body[field].length > rules.maxLength) {
+          errors[field].push(`${field} must be at most ${rules.maxLength} characters`);
+      }
+      if (rules.pattern && req.body[field] && !rules.pattern.test(req.body[field])) {
+          errors[field].push(rules.message || `Invalid ${field}`);
+      }
+      if (rules.min && req.body[field] && req.body[field] < rules.min) {
+          errors[field].push(`${field} must be at least ${rules.min}`);
+      }
+      if (rules.max && req.body[field] && req.body[field] > rules.max) {
+          errors[field].push(`${field} must be at most ${rules.max}`);
+      }
+  });
 
       // Extract user data from the request body
-      const { firstName, lastName, email, phone, password } = req.body;
+      const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
+
+// If there are validation errors, return a 400 response with errors
+      if (hasErrors) {
+          return res.status(400).json({ errors });
+      }
       
       // Check if the email already exists
       const existingUser = await models.User.findOne({ where: { email } });
