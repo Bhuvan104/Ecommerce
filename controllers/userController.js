@@ -55,7 +55,31 @@ const UserController = {
       console.error('Error fetching user details:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
-    }
+    },
+    async getUsers_add_orders_product(req, res) {
+      try {
+        // Find all users and include associated addresses and orders
+        const users = await models.User.findAll({
+          include: [
+            { model: models.Address }, // Include addresses associated with each user
+            { model: models.Order,
+              include: [
+                { 
+                  model: models.Product, // Include products associated with each order
+                  
+                }
+              ],
+              attributes: { exclude: ['productId'] }  }    // Include orders associated with each user
+          ]
+        });
+  
+        // Return the user details along with addresses and orders
+        return res.status(200).json(users);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      }
   ,
   async createAddressForUser(req, res) {
     try {
