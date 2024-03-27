@@ -3,7 +3,7 @@ name: Merge to Main
 on:
   push:
     branches:
-      - devlop
+      - develop
 
 jobs:
   merge:
@@ -16,6 +16,6 @@ jobs:
         run: |
           git config --global user.email "your-email@example.com"
           git config --global user.name "Your Name"
-          git fetch origin devlop
-          git merge origin/devlop --no-ff --no-edit
+          git fetch origin develop
+          git merge origin/develop --no-ff --no-edit
           git push origin main
