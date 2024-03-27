@@ -39,6 +39,24 @@ function validateFirstName(firstName) {
   return errors.length ? errors : null;
 }
 const UserController = {
+  async getUsers_add_orders(req, res) {
+    try {
+      // Find all users and include associated addresses and orders
+      const users = await models.User.findAll({
+        include: [
+          { model: models.Address }, // Include addresses associated with each user
+          { model: models.Order }    // Include orders associated with each user
+        ]
+      });
+
+      // Return the user details along with addresses and orders
+      return res.status(200).json(users);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    }
+  ,
   async createAddressForUser(req, res) {
     try {
       const { userId } = req.params;
