@@ -1,0 +1,13 @@
+node version:
+    -> node -v
+
+how many version of node
+    -> nvm ls
+
+To use particular version
+    -> nvm use 14
+
+dependencies:-
+    1) configure file like package.json
+        npm init
+    2)
