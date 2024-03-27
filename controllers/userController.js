@@ -137,13 +137,7 @@ const UserController = {
 
       // Extract user data from the request body
       const { firstName, lastName, email, phone, password } = req.body;
-      const validationError = validateFirstName(firstName);
-      console.log("bhuv an",firstName)
-      if (validationError) {
-        return res.status(400).json({ error: validationError });
-    } else {
-        console.log("First name is valid."); // First name is valid
-    }
+      
       // Check if the email already exists
       const existingUser = await models.User.findOne({ where: { email } });
       if (existingUser) {
