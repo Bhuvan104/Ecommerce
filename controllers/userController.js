@@ -39,6 +39,58 @@ function validateFirstName(firstName) {
   return errors.length ? errors : null;
 }
 const UserController = {
+  async createUserWithOrdersAndProducts(req, res) {
+    try {
+      // Extract user data from the request body
+      const { firstName, lastName, email, phone, password, addresses, orders } = req.body;
+  
+      // Create the user
+      const user = await models.User.create({
+        firstName,
+        lastName,
+        email,
+        phone,
+        password
+      });
+  
+      // Create associated addresses if provided
+      if (addresses && addresses.length > 0) {
+        await Promise.all(addresses.map(async addressData => {
+          await models.Address.create({
+            userId: user.id,
+            ...addressData
+          });
+        }));
+      }
+  
+      // Create associated orders if provided
+      if (orders && orders.length > 0) {
+        await Promise.all(orders.map(async orderData => {
+          const order = await models.Order.create({
+            userId: user.id,
+            ...orderData
+          });
+  
+          // Create associated products for each order if provided
+          if (orderData.products && orderData.products.length > 0) {
+            await Promise.all(orderData.products.map(async productData => {
+              await models.Product.create({
+                orderId: order.id,
+                ...productData
+              });
+            }));
+          }
+        }));
+      }
+  
+      // Return success response
+      return res.status(201).json({ message: 'User created successfully', user });
+    } catch (error) {
+      console.error('Error creating user:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+  
   async getUsers_add_orders(req, res) {
     try {
       // Find all users and include associated addresses and orders
