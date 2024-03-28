@@ -1,43 +1,6 @@
 
 const models = require('../models');
-function validateFirstName(firstName) {
-  const minLength = 2; // Minimum length requirement
-  const maxLength = 50; // Maximum length requirement
-  const errors = [];
 
-  // Format Check: Alphabetic characters only
-  const formatRegex = /^[a-zA-Z]+$/;
-
-  // Check if first name is provided
-  if (!firstName) {
-      errors.push("First name is required.");
-  }
-
-  // Length Limit Check
-  if (firstName.length < minLength || firstName.length > maxLength) {
-      errors.push("First name must be between " + minLength + " and " + maxLength + " characters long.");
-  }
-
-  // Format Check
-  if (!formatRegex.test(firstName)) {
-      errors.push("First name can only contain alphabetic characters.");
-  }
-
-  // Optional: Whitespace Trimming
-  const trimmedFirstName = firstName.trim();
-  if (trimmedFirstName !== firstName) {
-      errors.push("Leading or trailing whitespace is not allowed in the first name.");
-  }
-
-  // Optional: Case Consistency
-  const formattedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
-  if (formattedFirstName !== firstName) {
-      errors.push("First name should start with a capital letter followed by lowercase letters.");
-  }
-
-  // Return validation errors array
-  return errors.length ? errors : null;
-}
 const UserController = {
   async createUserWithOrdersAndProducts(req, res) {
     try {
