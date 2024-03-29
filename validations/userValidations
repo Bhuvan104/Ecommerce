@@ -1,5 +1,6 @@
 function userValidations(validationRules, req, errors) {
     Object.entries(validationRules).forEach(([field, rules]) => {
+        
         if (rules.required && req[field].length == 0) {
             errors[field].push(`${field} is required`);
         } 

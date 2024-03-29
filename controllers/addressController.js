@@ -1,6 +1,33 @@
 const models = require('../models');
 
 // Create a new address
+exports.addressValidationRules = {
+    door: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    },
+    street: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    },
+    post: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    },
+    dist: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    },
+    state: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    },
+    country: {
+        required: true,
+        maxLength: 255 // Adjust the max length as per your requirement
+    }
+};
+
 exports.createAddress = async (req, res) => {
     try {
         const { userId, door, street, post, dist, state, country } = req.body;

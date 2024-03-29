@@ -1,7 +1,7 @@
 
 const models = require('../models');
 const userValidations = require('../validations/userValidations');
-
+const { addressValidationRules } = require('./addressController');
 const validationRules = {
   firstName: {
       required: true,
@@ -126,17 +126,37 @@ const UserController = {
   ,
   async createAddressForUser(req, res) {
     try {
+      const errors ={
+        "address":{
+          door:[],
+          street:[],
+          post:[],
+          state:[],
+          country:[]
+
+      }
+
+      } ;
+      
       const { userId } = req.params;
       const { door, street, post, dist, state, country } = req.body;
+      const req_data={ door, street, post, dist, state, country }
+      userValidations(addressValidationRules,req_data,errors.address)
+      const hasErrors = Object.values(errors.address).some(fieldErrors => fieldErrors.length > 0);
 
+// If there are validation errors, return a 400 response with errors
+      if (hasErrors) {
+          return res.status(400).json({ errors });
+      }
+      
       // Check if the user exists
-      const user = await User.findByPk(userId);
+      const user = await models.User.findByPk(userId);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
 
       // Create the address and associate it with the user
-      const newAddress = await Address.create({
+      const newAddress = await models.Address.create({
         userId,
         door,
         street,
@@ -186,35 +206,35 @@ const UserController = {
     }
   },
 
-  async createAddressForUser(req, res) {
-    try {
-      const { userId } = req.params;
-      const { door, street, post, dist, state, country } = req.body;
+  // async createAddressForUser(req, res) {
+  //   try {
+  //     const { userId } = req.params;
+  //     const { door, street, post, dist, state, country } = req.body;
 
-      // Check if the user exists
-      const user = await User.findByPk(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
+  //     // Check if the user exists
+  //     const user = await User.findByPk(userId);
+  //     if (!user) {
+  //       return res.status(404).json({ error: 'User not found' });
+  //     }
 
-      // Create the address and associate it with the user
-      const newAddress = await Address.create({
-        userId,
-        door,
-        street,
-        post,
-        dist,
-        state,
-        country
-      });
+  //     // Create the address and associate it with the user
+  //     const newAddress = await Address.create({
+  //       userId,
+  //       door,
+  //       street,
+  //       post,
+  //       dist,
+  //       state,
+  //       country
+  //     });
 
-      // Return the newly created address
-      return res.status(201).json(newAddress);
-    } catch (error) {
-      console.error('Error creating address:', error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  //     // Return the newly created address
+  //     return res.status(201).json(newAddress);
+  //   } catch (error) {
+  //     console.error('Error creating address:', error);
+  //     return res.status(500).json({ error: 'Internal server error' });
+  //   }
+  // },
 
   async createUser(req, res) {
     try {
@@ -346,47 +366,46 @@ const UserController = {
       console.error('Error updating user:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
-  },
+  }
 
-  async createAddressForUser(req, res) {
-    try {
-      console.log("retytuytrew")
-      // Extract user ID from the request parameters or request body
-      const { userId } = req.params; // Assuming user ID is in the request parameters
-      // Retrieve the user from the database
-      const user = await models.User.findByPk(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
+  // async createAddressForUser(req, res) {
+  //   try {
+  //     // Extract user ID from the request parameters or request body
+  //     const { userId } = req.params; // Assuming user ID is in the request parameters
+  //     // Retrieve the user from the database
+  //     const user = await models.User.findByPk(userId);
+  //     if (!user) {
+  //       return res.status(404).json({ error: 'User not found' });
+  //     }
 
-      // Extract address data from the request body
-      const { door, street, post, dist, state, country } = req.body;
+  //     // Extract address data from the request body
+  //     const { door, street, post, dist, state, country } = req.body;
 
-      // Create the address and associate it with the user
-      const newAddress = await models.Address.create({
-        userId: userId,
-        door: door,
-        street: street,
-        post: post,
-        dist: dist,
-        state: state,
-        country: country
-      });
-      const userWithAddress = await models.User.findByPk(userId, { include: models.Address });
+  //     // Create the address and associate it with the user
+  //     const newAddress = await models.Address.create({
+  //       userId: userId,
+  //       door: door,
+  //       street: street,
+  //       post: post,
+  //       dist: dist,
+  //       state: state,
+  //       country: country
+  //     });
+  //     const userWithAddress = await models.User.findByPk(userId, { include: models.Address });
 
-    if (!userWithAddress) {
-        return res.status(404).json({ error: 'User not found' });
-    }
+  //   if (!userWithAddress) {
+  //       return res.status(404).json({ error: 'User not found' });
+  //   }
 
-    return res.status(201).json({ 
-        method: req.method, // Include the HTTP method
-        user: userWithAddress,
-    });
-        } catch (error) {
-          console.error('Error creating address:', error);
-          return res.status(500).json({ error: 'Internal server error' });
-        }
-    }
+  //   return res.status(201).json({ 
+  //       method: req.method, // Include the HTTP method
+  //       user: userWithAddress,
+  //   });
+  //       } catch (error) {
+  //         console.error('Error creating address:', error);
+  //         return res.status(500).json({ error: 'Internal server error' });
+  //       }
+  //   }
 
 
   
