@@ -6,25 +6,26 @@ const validationRules = {
   firstName: {
       required: true,
       maxLength: 50,
-      firstNamePattern: /^[a-zA-Z0-9\s]*$/,
-      message: 'Invalid name, only letters, numbers, and spaces are allowed'
+      firstNamePattern: /^[a-zA-Z0-9]*$/,
+      message: 'Invalid name, only letters and numbers are allowed'
   },
   lastName: {
     required: true,
     maxLength: 50,
-    lastNamePattern: /^[a-zA-Z0-9\s]*$/,
-    message: 'Invalid name, only letters, numbers, and spaces are allowed'
+    lastNamePattern: /^[a-zA-Z0-9]*$/,
+    message: 'Invalid name, only letters and numbers are allowed'
 },
   email: {
       required: true,
       emailPattern: /^[^\s@]+@gmail\.com$/,
       message: 'Invalid email address',
       minLength: 14,
+      maxLength: 20,
   },
   phone: {
       required: true,
       phonePattern: /^[0-9]{10}$/,
-      message: 'Invalid phone number, must be 10 digits'
+      message: 'Invalid phone number, must be 10 digits' 
   }
 };
 const UserController = {
