@@ -1,6 +1,37 @@
 
 const models = require('../models');
 const userValidations = require('../validations/userValidations');
+const errors = {
+  firstName: [],
+  lastName: [],
+  email: [],
+  phone: [],
+};
+const validationRules = {
+  firstName: {
+      required: true,
+      maxLength: 50,
+      pattern: /^[a-zA-Z0-9\s]*$/,
+      message: 'Invalid name, only letters, numbers, and spaces are allowed'
+  },
+  lastName: {
+    required: true,
+    maxLength: 50,
+    pattern: /^[a-zA-Z0-9\s]*$/,
+    message: 'Invalid name, only letters, numbers, and spaces are allowed'
+},
+  email: {
+      required: true,
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'Invalid email address',
+      minLength: 10,
+  },
+  phone: {
+      required: true,
+      pattern: /^[0-9]{10}$/,
+      message: 'Invalid phone number, must be 10 digits'
+  }
+};
 const UserController = {
   async createUserWithOrdersAndProducts(req, res,errors) {
     try {
@@ -190,38 +221,9 @@ const UserController = {
   async createUser(req, res) {
     try {
       
-      const req_data={ firstName, lastName, email, phone, password } = req.body;
-      const errors = {
-        firstName: [],
-        lastName: [],
-        email: [],
-        phone: [],
-    };
-      const validationRules = {
-        firstName: {
-            required: true,
-            maxLength: 50,
-            pattern: /^[a-zA-Z0-9\s]*$/,
-            message: 'Invalid name, only letters, numbers, and spaces are allowed'
-        },
-        lastName: {
-          required: true,
-          maxLength: 50,
-          pattern: /^[a-zA-Z0-9\s]*$/,
-          message: 'Invalid name, only letters, numbers, and spaces are allowed'
-      },
-        email: {
-            required: true,
-            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Invalid email address',
-            minLength: 10,
-        },
-        phone: {
-            required: true,
-            pattern: /^[0-9]{10}$/,
-            message: 'Invalid phone number, must be 10 digits'
-        }
-    };
+      const req_data={ firstName, lastName, email, phone, password }=req.body
+      
+      
     userValidations(validationRules,req_data,errors)    
 
       // Extract user data from the request body
@@ -309,8 +311,12 @@ const UserController = {
     try {
       const { userId } = req.params;
       const { firstName, lastName, email, phone } = req.body;
-
-      // Find the user by ID
+      const req_data={ firstName, lastName, email, phone}
+      userValidations(validationRules,req_data,errors)
+      const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
+      if (hasErrors) {
+        return res.status(400).json({ errors });
+    }
       const user = await models.User.findByPk(userId);
 
       if (!user) {
