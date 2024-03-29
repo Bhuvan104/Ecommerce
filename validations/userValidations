@@ -1,0 +1,26 @@
+function userValidations(validationRules, req, errors) {
+    Object.entries(validationRules).forEach(([field, rules]) => {
+        if (rules.required && req[field].length ==0) {
+            errors[field].push(`${field} is required`);
+        } 
+        if (rules.minLength && req[field] && req[field].length < rules.minLength) {
+            errors[field].push(`${field} must be at least ${rules.minLength} characters`);
+        }
+        if (rules.maxLength && req[field] && req[field].length > rules.maxLength) {
+            errors[field].push(`${field} must be at most ${rules.maxLength} characters`);
+        }
+        if (rules.pattern && req[field] && !rules.pattern.test(req[field])) {
+            errors[field].push(rules.message || `Invalid ${field}`);
+        }
+        if (rules.min && req[field] && requestAnimationFrame[field] < rules.min) {
+            errors[field].push(`${field} must be at least ${rules.min}`);
+        }
+        if (rules.max && req[field] && req[field] > rules.max) {
+            errors[field].push(`${field} must be at most ${rules.max}`);
+        }
+    });
+
+    return errors;
+}
+
+module.exports = userValidations;

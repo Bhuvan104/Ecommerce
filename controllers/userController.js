@@ -1,12 +1,11 @@
 
 const models = require('../models');
-
+const userValidations = require('../validations/userValidations');
 const UserController = {
-  async createUserWithOrdersAndProducts(req, res) {
+  async createUserWithOrdersAndProducts(req, res,errors) {
     try {
       // Extract user data from the request body
       const { firstName, lastName, email, phone, password, addresses, orders } = req.body;
-  
       // Create the user
       const user = await models.User.create({
         firstName,
@@ -191,7 +190,13 @@ const UserController = {
   async createUser(req, res) {
     try {
       
-      const { firstName, lastName, email, phone, password } = req.body;
+      const req_data={ firstName, lastName, email, phone, password } = req.body;
+      const errors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phone: [],
+    };
       const validationRules = {
         firstName: {
             required: true,
@@ -217,35 +222,7 @@ const UserController = {
             message: 'Invalid phone number, must be 10 digits'
         }
     };
-      const errors = {
-        firstName: [],
-        lastName: [],
-        email: [],
-        phone: [],
-    };
-    Object.entries(validationRules).forEach(([field, rules]) => {
-      if (rules.required && req.body[field][0]==" " || req.body[field][-1]==" ") {
-        errors[field].push(`${field} should not start or end with space`);
-    }
-      if (rules.required && !req.body[field]) {
-          errors[field].push(`${field} is required`);
-      }
-      if (rules.minLength && req.body[field] && req.body[field].length < rules.minLength) {
-          errors[field].push(`${field} must be at least ${rules.minLength} characters`);
-      }
-      if (rules.maxLength && req.body[field] && req.body[field].length > rules.maxLength) {
-          errors[field].push(`${field} must be at most ${rules.maxLength} characters`);
-      }
-      if (rules.pattern && req.body[field] && !rules.pattern.test(req.body[field])) {
-          errors[field].push(rules.message || `Invalid ${field}`);
-      }
-      if (rules.min && req.body[field] && req.body[field] < rules.min) {
-          errors[field].push(`${field} must be at least ${rules.min}`);
-      }
-      if (rules.max && req.body[field] && req.body[field] > rules.max) {
-          errors[field].push(`${field} must be at most ${rules.max}`);
-      }
-  });
+    userValidations(validationRules,req_data,errors)    
 
       // Extract user data from the request body
       const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
