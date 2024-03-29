@@ -1,6 +1,6 @@
 function userValidations(validationRules, req, errors) {
     Object.entries(validationRules).forEach(([field, rules]) => {
-        if (rules.required && req[field].length ==0) {
+        if (rules.required && req[field].length == 0) {
             errors[field].push(`${field} is required`);
         } 
         if (rules.minLength && req[field] && req[field].length < rules.minLength) {
@@ -9,7 +9,16 @@ function userValidations(validationRules, req, errors) {
         if (rules.maxLength && req[field] && req[field].length > rules.maxLength) {
             errors[field].push(`${field} must be at most ${rules.maxLength} characters`);
         }
-        if (rules.pattern && req[field] && !rules.pattern.test(req[field])) {
+        if (rules.emailPattern && req[field] && !rules.emailPattern.test(req[field])) {
+            errors[field].push(rules.message || `Invalid ${field}`);
+        }
+        if (rules.firstNamePattern && req[field] && !rules.firstNamePattern.test(req[field])) {
+            errors[field].push(rules.message || `Invalid ${field}`);
+        }
+        if (rules.lastNamePattern && req[field] && !rules.lastNamePattern.test(req[field])) {
+            errors[field].push(rules.message || `Invalid ${field}`);
+        }
+        if (rules.phonePattern && req[field] && !rules.phonePattern.test(req[field])) {
             errors[field].push(rules.message || `Invalid ${field}`);
         }
         if (rules.min && req[field] && requestAnimationFrame[field] < rules.min) {

@@ -1,40 +1,37 @@
 
 const models = require('../models');
 const userValidations = require('../validations/userValidations');
-const errors = {
-  firstName: [],
-  lastName: [],
-  email: [],
-  phone: [],
-};
+
 const validationRules = {
   firstName: {
       required: true,
       maxLength: 50,
-      pattern: /^[a-zA-Z0-9\s]*$/,
+      firstNamePattern: /^[a-zA-Z0-9\s]*$/,
       message: 'Invalid name, only letters, numbers, and spaces are allowed'
   },
   lastName: {
     required: true,
     maxLength: 50,
-    pattern: /^[a-zA-Z0-9\s]*$/,
+    lastNamePattern: /^[a-zA-Z0-9\s]*$/,
     message: 'Invalid name, only letters, numbers, and spaces are allowed'
 },
   email: {
       required: true,
-      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      emailPattern: /^[^\s@]+@gmail\.com$/,
       message: 'Invalid email address',
-      minLength: 10,
+      minLength: 14,
   },
   phone: {
       required: true,
-      pattern: /^[0-9]{10}$/,
+      phonePattern: /^[0-9]{10}$/,
       message: 'Invalid phone number, must be 10 digits'
   }
 };
 const UserController = {
   async createUserWithOrdersAndProducts(req, res,errors) {
     try {
+      
+
       // Extract user data from the request body
       const { firstName, lastName, email, phone, password, addresses, orders } = req.body;
       // Create the user
@@ -220,6 +217,12 @@ const UserController = {
 
   async createUser(req, res) {
     try {
+      const errors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phone: [],
+      };
       
       const req_data={ firstName, lastName, email, phone, password }=req.body
       
@@ -309,6 +312,12 @@ const UserController = {
 
   async updateUser(req, res) {
     try {
+      const errors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phone: [],
+      };
       const { userId } = req.params;
       const { firstName, lastName, email, phone } = req.body;
       const req_data={ firstName, lastName, email, phone}
