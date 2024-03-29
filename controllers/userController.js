@@ -26,24 +26,50 @@ const validationRules = {
       required: true,
       phonePattern: /^[0-9]{10}$/,
       message: 'Invalid phone number, must be 10 digits' 
-  }
+  },
+  addressValidationRules,
+  
 };
 const UserController = {
   async createUserWithOrdersAndProducts(req, res,errors) {
     try {
-      
+      const errors ={
+          firstName: [],
+          lastName: [],
+          email: [],
+          phone: [],
+        "addresses":{
+          door:[],
+          street:[],
+          post:[],
+          state:[],
+          country:[]
+      },
+      "orders": {
+        productId: [],
+        placedAt: [],
+        offerAtOrder: [],
+        datePurchased: [],
+        deliveryAddressId: [],
+        paymentId: [],
+        deliveryStatus: []
+    }
+      }
 
       // Extract user data from the request body
-      const { firstName, lastName, email, phone, password, addresses, orders } = req.body;
+      const { firstName, lastName, email, phone, addresses, orders } = req.body;
+      const req_data={ firstName, lastName, email, phone, addresses, orders }
+      userValidations(validationRules,req_data,errors)    
+
+      // Extract user data from the request body
+      const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
+// If there are validation errors, return a 400 response with errors
+      if (hasErrors) {
+          return res.status(400).json({ errors });
+      }
+      const user_data={ firstName, lastName, email, phone,password}
       // Create the user
-      const user = await models.User.create({
-        firstName,
-        lastName,
-        email,
-        phone,
-        password
-      });
-  
+      const user = await models.User.create(user_data);
       // Create associated addresses if provided
       if (addresses && addresses.length > 0) {
         await Promise.all(addresses.map(async addressData => {

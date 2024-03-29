@@ -2,7 +2,40 @@
 
 const models = require('../models');
 
-
+const orderValidationRules = {
+    productId: {
+        required: true,
+        // Add more rules if necessary
+    },
+    customerId: {
+        required: true,
+        // Add more rules if necessary
+    },
+    placedAt: {
+        required: true,
+        // Add rules as needed
+    },
+    offerAtOrder: {
+        required: true,
+        // Add rules as needed
+    },
+    datePurchased: {
+        required: true,
+        // Add rules as needed
+    },
+    deliveryAddressId: {
+        required: true,
+        // Add rules as needed
+    },
+    paymentId: {
+        required: true,
+        // Add rules as needed
+    },
+    deliveryStatus: {
+        required: true,
+        // Add rules as needed
+    },
+};
 
 const getUsersWithOrders = async (req, res) => {
     try {
