@@ -35,7 +35,6 @@ const validationRules = [
     field:"password",
         type:"string",
         required: true,
-        emailPattern: /^[^\s@]+@gmail\.com$/,
         message: 'Invalid email address',
         minLength: 8,
         maxLength: 20,

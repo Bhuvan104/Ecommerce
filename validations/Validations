@@ -1,4 +1,7 @@
 function Validations(validationRules, req, errors) {
+    console.log(validationRules)
+    console.log(req)
+    console.log(errors)
     validationRules.forEach(rule => {
         if (rule.type !== "object") {
             const value = req[rule.field];
@@ -28,6 +31,12 @@ function Validations(validationRules, req, errors) {
                         errors[field].push(rule.message || `Invalid ${field}`);
                     }
                 }
+                if(rule.type="email"){
+                    if (rule.emailPattern && !rule.emailPattern.test(value)) {
+                        errors[field] = errors[field] || [];
+                        errors[field].push(rule.message || `Invalid ${field}`);
+                    }
+                }
                 // Add other validation rules for different field types
             }
         } else {
@@ -47,8 +56,6 @@ function Validations(validationRules, req, errors) {
 
                     // Merge nested object errors into main errors object with keys corresponding to field names
                     errors[nestedField] = errors[nestedField] || {};
-                    console.log("errors[nestedField]")
-                    console.log(errors[nestedField])
                     Object.assign(errors[nestedField], nestedErrors);
                 }
             }
