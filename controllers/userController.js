@@ -98,8 +98,8 @@ const UserController = {
       // Create the user
       const user = await models.User.create(user_data);
       // Create associated addresses if provided
-      if (addresses && addresses.length > 0) {
-        await Promise.all(addresses.map(async addressData => {
+      if (address && address.length > 0) {
+        await Promise.all(address.map(async addressData => {
           await models.Address.create({
             userId: user.id,
             ...addressData
@@ -108,8 +108,8 @@ const UserController = {
       }
   
       // Create associated orders if provided
-      if (orders && orders.length > 0) {
-        await Promise.all(orders.map(async orderData => {
+      if (order && order.length > 0) {
+        await Promise.all(order.map(async orderData => {
           const order = await models.Order.create({
             userId: user.id,
             ...orderData
