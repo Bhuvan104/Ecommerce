@@ -12,7 +12,7 @@ router.post('/addresses-orders-product',  userController.createUserWithOrdersAnd
 router.post('/:userId/address', userController.createAddressForUser);
 // Create a new user
 router.post('/', userController.createUser);
-router.get('/',authMiddleware, userController.getAllUsers);
+router.get('/', userController.getAllUsers);
 // Get a user by ID
 router.get('/:userId',authMiddleware, userController.getUser);
 
