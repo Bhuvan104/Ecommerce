@@ -1,53 +1,61 @@
 function Validations(validationRules, req, errors) {
     validationRules.forEach(rule => {
-        if(req[rule.field]){
-            const value=req[rule.field]
-            const field=rule.field
-            const rules=rule
-            if(rules.type=="string"){
-                if (rule.required && value === '') {
-                    errors[field].push(`${field} is required`);
+        if (rule.type !== "object") {
+            const value = req[rule.field];
+            const field = rule.field;
+
+            if (rule.required && (value === undefined || value === null || value === '')) {
+                // Initialize errors[field] as an array if it's undefined
+                errors[field] = errors[field] || [];
+                errors[field].push(`${field} is required`);
+
+            } else {
+                if (rule.type === "string") {
+                    if (rule.minLength && value.length < rule.minLength) {
+                        errors[field] = errors[field] || [];
+                        errors[field].push(`${field} must be at least ${rule.minLength} characters`);
+                    }
+                    if (rule.maxLength && value.length > rule.maxLength) {
+                        errors[field] = errors[field] || [];
+                        errors[field].push(`${field} must be at most ${rule.maxLength} characters`);
+                    }
+                    if (rule.firstNamePattern && !rule.firstNamePattern.test(value)) {
+                        errors[field] = errors[field] || [];
+                        errors[field].push(rule.message || `Invalid ${field}`);
+                    }
+                    if (rule.lastNamePattern && !rule.lastNamePattern.test(value)) {
+                        errors[field] = errors[field] || [];
+                        errors[field].push(rule.message || `Invalid ${field}`);
+                    }
                 }
-                if (rule.minLength && value.length < rule.minLength) {
-                    errors[field].push(`${field} must be at least ${rule.minLength} characters`);
-                }
-                if (rule.maxLength && value.length > rule.maxLength) {
-                    errors[field].push(`${field} must be at most ${rule.maxLength} characters`);
-                }
-                if (rule.firstNamePattern && !rule.firstNamePattern.test(value)) {
-                    errors[field].push(rule.message || `Invalid ${field}`);
-                }
-                if (rule.lastNamePattern && !rule.lastNamePattern.test(value)) {
-                    errors[field].push(rule.message || `Invalid ${field}`);
+                // Add other validation rules for different field types
+            }
+        } else {
+            // Handle nested object validation
+            for (const nestedField in rule) {
+                if (nestedField !== 'type') {
+                    const nestedValue = req[nestedField];
+                    const nestedErrors = {};
+
+                    if (Array.isArray(nestedValue)) {
+                        nestedValue.forEach(nestedObj => {
+                            Validations(rule[nestedField], nestedObj, nestedErrors);
+                        });
+                    } else if (nestedValue && typeof nestedValue === 'object') {
+                        Validations(rule[nestedField], nestedValue, nestedErrors);
+                    }
+
+                    // Merge nested object errors into main errors object with keys corresponding to field names
+                    errors[nestedField] = errors[nestedField] || {};
+                    console.log("errors[nestedField]")
+                    console.log(errors[nestedField])
+                    Object.assign(errors[nestedField], nestedErrors);
                 }
             }
-            if(rules.type=="phone" && rule.phonePattern){
-                if (!rule.phonePattern.test(value)) {
-                    errors[field].push(rule.message || `Invalid ${field}`);
-                }
-            }
-            if(rules.type=="number"){
-                if (rule.min && value < rule.min) {
-                    errors[field].push(`${field} must be at least ${rule.min}`);
-                }
-                if (rule.max && value > rule.max) {
-                    errors[field].push(`${field} must be at most ${rule.max}`);
-                }
-            }
-            if(rules.type=="email"){
-                if (!value.match(rule.phonePattern)) {
-                    errors[field].push(rule.message || `Invalid ${field}`);
-                }
-            }
-            if(rules.type=="object"){
-                const nestedErrors = {};
-                Validations(rule.validationRules, value, nestedErrors);
-                // Merge nested errors into main errors object
-                errors[field] = Object.assign(errors[field] || {}, nestedErrors);
-            }
-        }    
+        }
     });
 
-    return errors
+    return errors;
 }
+
 module.exports = Validations;

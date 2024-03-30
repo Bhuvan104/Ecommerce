@@ -64,14 +64,14 @@ const UserController = {
           email: [],
           phone: [],
           password:[],
-        "addresses":{
+        "address":{
           door:[],
           street:[],
           post:[],
           state:[],
           country:[]
       },
-      "orders": {
+      "order": {
         productId: [],
         placedAt: [],
         offerAtOrder: [],
@@ -83,8 +83,8 @@ const UserController = {
       }
 
       // Extract user data from the request body
-      const { firstName, lastName, email, phone,password,addresses, orders } = req.body;
-      const req_data={ firstName, lastName, email, phone,password, addresses, orders }
+      const { firstName, lastName, email, phone,password,address, order } = req.body;
+      const req_data={ firstName, lastName, email, phone,password, address, order }
 
       Validations(validationRules,req_data,errors)    
 
