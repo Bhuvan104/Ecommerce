@@ -1,6 +1,6 @@
 
 const models = require('../models');
-const userValidations = require('../validations/userValidations');
+const Validations = require('../validations/Validations');
 const { addressValidationRules } = require('./addressController');
 const orderController = require('../controllers/orderController');
 const orderValidationRules=orderController.orderValidationRules
@@ -86,7 +86,7 @@ const UserController = {
       const { firstName, lastName, email, phone,password,addresses, orders } = req.body;
       const req_data={ firstName, lastName, email, phone,password, addresses, orders }
 
-      userValidations(validationRules,req_data,errors)    
+      Validations(validationRules,req_data,errors)    
 
       // Extract user data from the request body
       const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
@@ -194,7 +194,7 @@ const UserController = {
       const { userId } = req.params;
       const { door, street, post, dist, state, country } = req.body;
       const req_data={ door, street, post, dist, state, country }
-      userValidations(addressValidationRules,req_data,errors.address)
+      Validations(addressValidationRules,req_data,errors.address)
       const hasErrors = Object.values(errors.address).some(fieldErrors => fieldErrors.length > 0);
 
 // If there are validation errors, return a 400 response with errors
@@ -301,7 +301,7 @@ const UserController = {
       const req_data={ firstName, lastName, email, phone, password }=req.body
       
       
-    userValidations(validationRules,req_data,errors)    
+    Validations(validationRules,req_data,errors)    
 
       // Extract user data from the request body
       const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
@@ -395,7 +395,7 @@ const UserController = {
       const { userId } = req.params;
       const { firstName, lastName, email, phone } = req.body;
       const req_data={ firstName, lastName, email, phone}
-      userValidations(validationRules,req_data,errors)
+      Validations(validationRules,req_data,errors)
       const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
       if (hasErrors) {
         return res.status(400).json({ errors });

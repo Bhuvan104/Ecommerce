@@ -1,4 +1,4 @@
-function userValidations(validationRules, req, errors) {
+function Validations(validationRules, req, errors) {
     validationRules.forEach(rule => {
         if(req[rule.field]){
             const value=req[rule.field]
@@ -41,7 +41,7 @@ function userValidations(validationRules, req, errors) {
             }
             if(rules.type=="object"){
                 const nestedErrors = {};
-                userValidations(rule.validationRules, value, nestedErrors);
+                Validations(rule.validationRules, value, nestedErrors);
                 // Merge nested errors into main errors object
                 errors[field] = Object.assign(errors[field] || {}, nestedErrors);
             }
@@ -50,4 +50,4 @@ function userValidations(validationRules, req, errors) {
 
     return errors
 }
-module.exports = userValidations;
+module.exports = Validations;
