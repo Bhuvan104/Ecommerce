@@ -1,36 +1,53 @@
 function userValidations(validationRules, req, errors) {
-    Object.entries(validationRules).forEach(([field, rules]) => {
-        
-        if (rules.required && req[field].length == 0) {
-            errors[field].push(`${field} is required`);
-        } 
-        if (rules.minLength && req[field] && req[field].length < rules.minLength) {
-            errors[field].push(`${field} must be at least ${rules.minLength} characters`);
-        }
-        if (rules.maxLength && req[field] && req[field].length > rules.maxLength) {
-            errors[field].push(`${field} must be at most ${rules.maxLength} characters`);
-        }
-        if (rules.emailPattern && req[field] && !rules.emailPattern.test(req[field])) {
-            errors[field].push(rules.message || `Invalid ${field}`);
-        }
-        if (rules.firstNamePattern && req[field] && !rules.firstNamePattern.test(req[field])) {
-            errors[field].push(rules.message || `Invalid ${field}`);
-        }
-        if (rules.lastNamePattern && req[field] && !rules.lastNamePattern.test(req[field])) {
-            errors[field].push(rules.message || `Invalid ${field}`);
-        }
-        if (rules.phonePattern && req[field] && !rules.phonePattern.test(req[field])) {
-            errors[field].push(rules.message || `Invalid ${field}`);
-        }
-        if (rules.min && req[field] && requestAnimationFrame[field] < rules.min) {
-            errors[field].push(`${field} must be at least ${rules.min}`);
-        }
-        if (rules.max && req[field] && req[field] > rules.max) {
-            errors[field].push(`${field} must be at most ${rules.max}`);
-        }
+    validationRules.forEach(rule => {
+        if(req[rule.field]){
+            const value=req[rule.field]
+            const field=rule.field
+            const rules=rule
+            if(rules.type=="string"){
+                if (rule.required && value === '') {
+                    errors[field].push(`${field} is required`);
+                }
+                if (rule.minLength && value.length < rule.minLength) {
+                    errors[field].push(`${field} must be at least ${rule.minLength} characters`);
+                }
+                if (rule.maxLength && value.length > rule.maxLength) {
+                    errors[field].push(`${field} must be at most ${rule.maxLength} characters`);
+                }
+                if (rule.firstNamePattern && !rule.firstNamePattern.test(value)) {
+                    errors[field].push(rule.message || `Invalid ${field}`);
+                }
+                if (rule.lastNamePattern && !rule.lastNamePattern.test(value)) {
+                    errors[field].push(rule.message || `Invalid ${field}`);
+                }
+            }
+            if(rules.type=="phone" && rule.phonePattern){
+                if (!rule.phonePattern.test(value)) {
+                    errors[field].push(rule.message || `Invalid ${field}`);
+                }
+            }
+            if(rules.type=="number"){
+                if (rule.min && value < rule.min) {
+                    errors[field].push(`${field} must be at least ${rule.min}`);
+                }
+                if (rule.max && value > rule.max) {
+                    errors[field].push(`${field} must be at most ${rule.max}`);
+                }
+            }
+            if(rules.type=="email"){
+                if (!value.match(rule.phonePattern)) {
+                    errors[field].push(rule.message || `Invalid ${field}`);
+                }
+            }
+            if(rules.type=="object"){
+                const nestedErrors = {};
+                userValidations(rule.validationRules, value, nestedErrors);
+                // Merge nested errors into main errors object
+                errors[field] = Object.assign(errors[field] || {}, nestedErrors);
+            }
+        }    
     });
 
-    return errors;
+    return errors
 }
-
 module.exports = userValidations;

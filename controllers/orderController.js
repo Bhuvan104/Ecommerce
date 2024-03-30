@@ -1,41 +1,49 @@
 // orderController.js
 
 const models = require('../models');
+const orderValidationRules = [
+    {
+        field: "productId",
+        required: true,
+        // Add more rules if necessary
+    },
+    {
+        field: "customerId",
+        required: true,
+        // Add more rules if necessary
+    },
+    {
+        field: "placedAt",
+        required: true,
+        // Add rules as needed
+    },
+    {
+        field: "offerAtOrder",
+        required: true,
+        // Add rules as needed
+    },
+    {
+        field: "datePurchased",
+        required: true,
+        // Add rules as needed
+    },
+    {
+        field: "deliveryAddressId",
+        required: true,
+        // Add rules as needed
+    },
+    {
+        field: "paymentId",
+        required: true,
+        // Add rules as needed
+    },
+    {
+        field: "deliveryStatus",
+        required: true,
+        // Add rules as needed
+    }
+];
 
-const orderValidationRules = {
-    productId: {
-        required: true,
-        // Add more rules if necessary
-    },
-    customerId: {
-        required: true,
-        // Add more rules if necessary
-    },
-    placedAt: {
-        required: true,
-        // Add rules as needed
-    },
-    offerAtOrder: {
-        required: true,
-        // Add rules as needed
-    },
-    datePurchased: {
-        required: true,
-        // Add rules as needed
-    },
-    deliveryAddressId: {
-        required: true,
-        // Add rules as needed
-    },
-    paymentId: {
-        required: true,
-        // Add rules as needed
-    },
-    deliveryStatus: {
-        required: true,
-        // Add rules as needed
-    },
-};
 
 const getUsersWithOrders = async (req, res) => {
     try {
@@ -113,5 +121,6 @@ const createOrder = async (req, res) => {
 
 module.exports = {
     createOrder,
-    getUsersWithOrders
+    getUsersWithOrders,
+    orderValidationRules
 };

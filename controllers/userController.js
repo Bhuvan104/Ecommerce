@@ -2,42 +2,68 @@
 const models = require('../models');
 const userValidations = require('../validations/userValidations');
 const { addressValidationRules } = require('./addressController');
-const validationRules = {
-  firstName: {
+const orderController = require('../controllers/orderController');
+const orderValidationRules=orderController.orderValidationRules
+
+const validationRules = [
+   {
+      field:"firstName",
+      type:"string",
       required: true,
-      maxLength: 50,
+      maxLength: 15,
       firstNamePattern: /^[a-zA-Z0-9]*$/,
       message: 'Invalid name, only letters and numbers are allowed'
   },
-  lastName: {
+  {
+    field:"lastName",
+    type:"string",
     required: true,
     maxLength: 50,
     lastNamePattern: /^[a-zA-Z0-9]*$/,
     message: 'Invalid name, only letters and numbers are allowed'
 },
-  email: {
+{
+  field:"email",
+      type:"email",
       required: true,
       emailPattern: /^[^\s@]+@gmail\.com$/,
       message: 'Invalid email address',
       minLength: 14,
       maxLength: 20,
   },
-  phone: {
+  {
+    field:"password",
+        type:"string",
+        required: true,
+        emailPattern: /^[^\s@]+@gmail\.com$/,
+        message: 'Invalid email address',
+        minLength: 8,
+        maxLength: 20,
+    },
+   {
+    field:"phone",
+      type:"phone",
       required: true,
       phonePattern: /^[0-9]{10}$/,
       message: 'Invalid phone number, must be 10 digits' 
   },
-  addressValidationRules,
-  
-};
+  {"address":addressValidationRules,
+  type:"object",
+},
+  {"order":orderValidationRules,
+  type:"object"}
+
+];
 const UserController = {
   async createUserWithOrdersAndProducts(req, res,errors) {
     try {
+      
       const errors ={
           firstName: [],
           lastName: [],
           email: [],
           phone: [],
+          password:[],
         "addresses":{
           door:[],
           street:[],
@@ -57,8 +83,9 @@ const UserController = {
       }
 
       // Extract user data from the request body
-      const { firstName, lastName, email, phone, addresses, orders } = req.body;
-      const req_data={ firstName, lastName, email, phone, addresses, orders }
+      const { firstName, lastName, email, phone,password,addresses, orders } = req.body;
+      const req_data={ firstName, lastName, email, phone,password, addresses, orders }
+
       userValidations(validationRules,req_data,errors)    
 
       // Extract user data from the request body
