@@ -301,7 +301,6 @@ const UserController = {
       
       
     Validations(validationRules,req_data,errors)    
-
       // Extract user data from the request body
       const hasErrors = Object.values(errors).some(fieldErrors => fieldErrors.length > 0);
 
@@ -313,7 +312,7 @@ const UserController = {
       // Check if the email already exists
       const existingUser = await models.User.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(400).json({ error: 'Email already exists' });
+        return res.status(400).json({ errors: 'Email already exists' });
       }
 
       // Create the user in the database with the hashed password
