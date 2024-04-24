@@ -1,0 +1,44 @@
+name: backend CI/CD
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  backendapi-ci-cd:
+    name: Deployment
+    runs-on: ubuntu-latest
+    env:
+      cdn_bucket_name: polyglot-posse-1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+    #   - name: NPM build
+    #     run: |
+    #       sed -i "s|XXX_accessToken_XXX|${{ secrets.NPM_ACCESSTOKEN }}|g" "./.npmrc" 
+    #       npm install -f
+    #       OPENAI_KEY=${{ secrets.OPENAI_API_KEY }} npm run build
+
+    #   - name: Configure AWS Credentials
+    #     uses: aws-actions/configure-aws-credentials@v1
+    #     with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    #   - name: 'AWS S3 Copy'
+    #     run: |
+    #       pip install awscli
+    #       aws s3 sync dist/spa "s3://${{ env.cdn_bucket_name }}" --expires 2034-01-01T00:00:00Z --cache-control max-age=2592000
+    #       aws s3 cp dist/spa/index.html "s3://${{ env.cdn_bucket_name }}" --cache-control no-cache,public,max-age=0
+
+
+
+          
+          
