@@ -17,23 +17,17 @@ const upload = multer({ storage: storage });
 
 require('dotenv').config();
 const userRouter = require('./routes/userRouter');
-const loginRouter = require('./routes/loginRouter');
-const categoryRouter = require('./routes/categoryRoutes');
-const productRouter = require('./routes/productRouter');
-const postRoute=require('./routes/post')
+const clientRoutes = require('./routes/clientRoutes');
+const clientAddressRoutes = require('./routes/clientAddressRoutes');
+const materialInwardRoutes = require('./routes/materialInwardRoutes');
 const bodyParser=require('body-parser')
-const addressRouter = require('./routes/addressRouter');
-const orderRouter = require('./routes/orderRouter');
-const imagesRouter = require('./routes/imagesRouter');
+
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json())
 app.use(upload.any());
-app.use('/post',postRoute)
-app.use('/login', loginRouter);
-app.use('/products', productRouter);
-app.use('/addresses', addressRouter);
-app.use('/order', orderRouter);
-app.use('/categories', categoryRouter);
+
 app.use('/usersRegister', userRouter);
-app.use('/images', imagesRouter);
+app.use('/clients', clientRoutes);
+app.use('/clientaddress', clientAddressRoutes);
+app.use('/materialinward', materialInwardRoutes);
 module.exports =app

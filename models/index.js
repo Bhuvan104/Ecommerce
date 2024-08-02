@@ -15,6 +15,7 @@ let sequelize;
 // Assuming you want to use the configuration for the 'development' environment
 sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
   dialect: 'mysql',
+  port: config.development.port, 
   ...config.development // Spread other configuration options here if needed
 });
 

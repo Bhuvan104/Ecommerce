@@ -1,23 +1,24 @@
 {"use_env_variable":"",
   "development": {
-    "username": "sql6696867",
-    "password": "g5ZxZRnwFW",
-    "database": "sql6696867",
-    "host": "sql6.freesqldatabase.com",
-    "dialect": "mysql"
+    "username": "root",
+    "password": null,
+    "database": "test",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3307
   },
   "test": {
-    "username": "sql6696867",
-    "password": "g5ZxZRnwFW",
-    "database": "sql6696867",
-    "host": "sql6.freesqldatabase.com",
+    "username": "root",
+    "password": null,
+    "database": "test",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
-    "username": "sql6696867",
-    "password": "g5ZxZRnwFW",
-    "database": "sql6696867",
-    "host": "sql6.freesqldatabase.com",
+    "username": "root",
+    "password": null,
+    "database": "test",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }
