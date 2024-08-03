@@ -105,6 +105,31 @@ update :- http://localhost:3000/clientaddress/2
 
 
 
+Create materialunit :-
+
+get :- http://localhost:3000/material-units
+
+post :- http://localhost:3000/material-units
+   
+   body:
+        {
+        "unit": "Kilogram",
+        "status": true
+        }
+
+delete ;- http://localhost:3000/material-units/1
+
+update :- http://localhost:3000/material-units/1
+    body:-
+       {
+        "unit": "Kilogram",
+        "status": true
+        }
+
+
+
+
+
 
 Create materialinward :-
 
