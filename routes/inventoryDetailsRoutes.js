@@ -2,7 +2,7 @@
 const express = require('express');
 const InventoryDetailsController = require('../controllers/inventoryDetailsController');
 const router = express.Router();
-
+const authMiddleware = require('../middleware/authMiddleware');
 // Define routes
 router.post('/', authMiddleware,InventoryDetailsController.createInventoryDetail);
 router.get('/',authMiddleware, InventoryDetailsController.getAllInventoryDetails);

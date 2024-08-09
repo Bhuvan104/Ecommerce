@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MaterialDispatchController = require('../controllers/material/materialDispatchController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 // Routes for MaterialDispatch
 router.post('/',authMiddleware, MaterialDispatchController.createMaterialDispatch);
 router.get('/',authMiddleware, MaterialDispatchController.getAllMaterialDispatches);

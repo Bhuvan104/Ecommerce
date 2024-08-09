@@ -5,9 +5,7 @@ const Joi = require('joi');
 const clientSchema = Joi.object({
   client_code: Joi.string().max(50).required(),
   client_name: Joi.string().max(100).required(),
-  status: Joi.boolean().required(),
-  createdAt: Joi.date().iso().required(),
-  updatedAt: Joi.date().iso().required()
+  status: Joi.boolean().required()
 });
 
 const ClientController = {

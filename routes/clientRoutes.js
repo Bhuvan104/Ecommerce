@@ -5,10 +5,10 @@ const clientController = require('../controllers/client/clientController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Create a new client
-router.post('/',authMiddleware, clientController.createClient);
+router.post('/', clientController.createClient);
 
 // Get all clients
-router.get('/',authMiddleware, clientController.getAllClients);
+router.get('/', clientController.getAllClients);
 
 // Get a single client by ID
 router.get('/:clientId',authMiddleware, clientController.getClient);

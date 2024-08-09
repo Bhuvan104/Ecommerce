@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MaterialProcessController = require('../controllers/material/materialProcessController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 
 // Create a new MaterialProcess
 router.post('/',authMiddleware, MaterialProcessController.createMaterialProcess);

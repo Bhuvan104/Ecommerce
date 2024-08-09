@@ -4,7 +4,7 @@ const Joi = require('joi');
 const materialInwardSchema = Joi.object({
   client_id: Joi.number().integer().required(),
   quantity: Joi.number().integer().required(),
-  dc_image: Joi.string().max(250).optional(),
+  dc_image: Joi.any().optional(),
   received_date: Joi.date().iso().required(),
   estimated_dispatch_date: Joi.date().iso().optional(),
   material_numbers: Joi.number().integer().required(),

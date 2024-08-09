@@ -1,8 +1,7 @@
 const express = require('express');
 const MaterialUnitController = require('../controllers/material/materialUnitController');
 const router = express.Router();
-
-
+const authMiddleware = require('../middleware/authMiddleware');
 
 // Define routes
 router.post('/',authMiddleware,MaterialUnitController.createMaterialUnit);

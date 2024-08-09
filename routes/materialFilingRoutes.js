@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MaterialFilingController = require('../controllers/material/materialFilingController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 // Routes for MaterialFiling
 router.post('/',authMiddleware, MaterialFilingController.createMaterialFiling);
 router.get('/',authMiddleware, MaterialFilingController.getAllMaterialFilings);

@@ -1,6 +1,6 @@
 const express = require('express');
 const MaterialController = require('../controllers/material/mMaterialController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.post('/',authMiddleware, MaterialController.createMaterial);

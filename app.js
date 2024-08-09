@@ -1,19 +1,7 @@
 const express=require('express')
-const multer = require('multer');
 const app=express()
 const cors = require('cors');
 app.use(cors());
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/'); // Store uploaded files in the 'uploads' directory
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname); // Keep the original filename
-    }
-  });
-  
-const upload = multer({ storage: storage });
-
 
 require('dotenv').config();
 const userRouter = require('./routes/userRouter');
@@ -33,7 +21,6 @@ const bodyParser=require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json())
-app.use(upload.any());
 
 app.use('/usersRegister', userRouter);
 app.use('/user', userRouter)

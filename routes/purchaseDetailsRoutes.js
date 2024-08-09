@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const PurchaseDetailsController = require('../controllers/purchaseDetailsController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 // Create a new PurchaseDetails
 router.post('/',authMiddleware, PurchaseDetailsController.createPurchaseDetails);
 
