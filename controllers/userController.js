@@ -14,6 +14,10 @@ const userSchema = Joi.object({
   phone: Joi.string().pattern(/^[0-9\s-]+$/).optional()
 });
 
+const userLoginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required()
+});
 
 const UserController = {
   async createUser(req, res) {
@@ -147,6 +151,39 @@ const UserController = {
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
+  async LoginUser(req, res) {
+    try {
+      const { error } = userLoginSchema.validate(req.body);
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+  
+      const { email, password } = req.body;
+  
+      // Find the user by email
+      const user = await models.User.findOne({ where: { email } });
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+  
+      // Compare the password with the hashed password in the database
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+  
+      // Generate a token (e.g., JWT)
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
+        expiresIn: '1h', // Token expiration time
+      });
+  
+      // Return the user details and token
+      return res.status(200).json({ user, token });
+    } catch (error) {
+      console.error('Error logging in user:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
   
 };

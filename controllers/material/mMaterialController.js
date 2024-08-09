@@ -1,4 +1,4 @@
-const { M_Material, MaterialUnit } = require('../models');
+const { M_Material, MaterialUnit } = require('../../models');
 const Joi = require('joi');
 
 // Define Joi schema for validation

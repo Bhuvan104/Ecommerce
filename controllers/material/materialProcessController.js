@@ -1,9 +1,10 @@
 'use strict';
-const { MaterialFiling } = require('../models');
+const { MaterialProcess } = require('../../models');
+
 const Joi = require('joi');
 
 // Define Joi schema for validation
-const materialFilingSchema = Joi.object({
+const materialProcessSchema = Joi.object({
   material_inward_id: Joi.number().integer().required(),
   received_qty: Joi.string().max(100).required(),
   assigned_type: Joi.string().max(100).required(),
@@ -14,18 +15,18 @@ const materialFilingSchema = Joi.object({
   manager: Joi.string().max(100).required()
 });
 
-const MaterialFilingController = {
-  // Create a new MaterialFiling
-  async createMaterialFiling(req, res) {
+const MaterialProcessController = {
+  // Create a new MaterialProcess
+  async createMaterialProcess(req, res) {
     try {
-      const { error } = materialFilingSchema.validate(req.body);
+      const { error } = materialProcessSchema.validate(req.body);
       if (error) {
         return res.status(400).json({ errors: error.details.map(detail => detail.message) });
       }
 
       const { material_inward_id, received_qty, assigned_type, balance_qty, completed_qty, assigned_floor, assigned_shift, manager } = req.body;
 
-      const newMaterialFiling = await MaterialFiling.create({ 
+      const newMaterialProcess = await MaterialProcess.create({ 
         material_inward_id, 
         received_qty, 
         assigned_type, 
@@ -36,59 +37,59 @@ const MaterialFilingController = {
         manager 
       });
 
-      return res.status(201).json(newMaterialFiling);
+      return res.status(201).json(newMaterialProcess);
     } catch (error) {
-      console.error('Error creating material filing:', error);
+      console.error('Error creating material process:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
 
-  // Get all MaterialFilings
-  async getAllMaterialFilings(req, res) {
+  // Get all MaterialProcesses
+  async getAllMaterialProcesses(req, res) {
     try {
-      const materialFilings = await MaterialFiling.findAll();
-      return res.json(materialFilings);
+      const materialProcesses = await MaterialProcess.findAll();
+      return res.json(materialProcesses);
     } catch (error) {
-      console.error('Error fetching material filings:', error);
+      console.error('Error fetching material processes:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
 
-  // Get a MaterialFiling by ID
-  async getMaterialFiling(req, res) {
+  // Get a MaterialProcess by ID
+  async getMaterialProcess(req, res) {
     try {
       const { id } = req.params;
-      const materialFiling = await MaterialFiling.findByPk(id);
+      const materialProcess = await MaterialProcess.findByPk(id);
 
-      if (!materialFiling) {
-        return res.status(404).json({ error: 'MaterialFiling not found.' });
+      if (!materialProcess) {
+        return res.status(404).json({ error: 'MaterialProcess not found.' });
       }
 
-      return res.json(materialFiling);
+      return res.json(materialProcess);
     } catch (error) {
-      console.error('Error fetching material filing:', error);
+      console.error('Error fetching material process:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
 
-  // Update a MaterialFiling by ID
-  async updateMaterialFiling(req, res) {
+  // Update a MaterialProcess by ID
+  async updateMaterialProcess(req, res) {
     try {
       const { id } = req.params;
-      const { error } = materialFilingSchema.validate(req.body, { presence: 'optional' });
+      const { error } = materialProcessSchema.validate(req.body, { presence: 'optional' });
       if (error) {
         return res.status(400).json({ errors: error.details.map(detail => detail.message) });
       }
 
       const { material_inward_id, received_qty, assigned_type, balance_qty, completed_qty, assigned_floor, assigned_shift, manager } = req.body;
 
-      const materialFiling = await MaterialFiling.findByPk(id);
+      const materialProcess = await MaterialProcess.findByPk(id);
 
-      if (!materialFiling) {
-        return res.status(404).json({ error: 'MaterialFiling not found.' });
+      if (!materialProcess) {
+        return res.status(404).json({ error: 'MaterialProcess not found.' });
       }
 
-      await materialFiling.update({ 
+      await materialProcess.update({ 
         material_inward_id, 
         received_qty, 
         assigned_type, 
@@ -99,30 +100,30 @@ const MaterialFilingController = {
         manager 
       });
 
-      return res.json(materialFiling);
+      return res.json(materialProcess);
     } catch (error) {
-      console.error('Error updating material filing:', error);
+      console.error('Error updating material process:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
 
-  // Delete a MaterialFiling by ID
-  async deleteMaterialFiling(req, res) {
+  // Delete a MaterialProcess by ID
+  async deleteMaterialProcess(req, res) {
     try {
       const { id } = req.params;
-      const materialFiling = await MaterialFiling.findByPk(id);
+      const materialProcess = await MaterialProcess.findByPk(id);
 
-      if (!materialFiling) {
-        return res.status(404).json({ error: 'MaterialFiling not found.' });
+      if (!materialProcess) {
+        return res.status(404).json({ error: 'MaterialProcess not found.' });
       }
 
-      await materialFiling.destroy();
-      return res.json({ message: 'MaterialFiling deleted successfully.' });
+      await materialProcess.destroy();
+      return res.json({ message: 'MaterialProcess deleted successfully.' });
     } catch (error) {
-      console.error('Error deleting material filing:', error);
+      console.error('Error deleting material process:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
 };
 
-module.exports = MaterialFilingController;
+module.exports = MaterialProcessController;

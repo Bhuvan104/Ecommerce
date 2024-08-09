@@ -1,4 +1,4 @@
-const { MaterialInward } = require('../models');
+const { MaterialInward } = require('../../models');
 const Joi = require('joi');
 
 const materialInwardSchema = Joi.object({

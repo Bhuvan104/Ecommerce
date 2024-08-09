@@ -1,4 +1,4 @@
-const models = require('../models');
+const models = require('../../models');
 const Joi = require('joi');
 
 // Define Joi schema for validation

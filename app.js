@@ -36,6 +36,7 @@ app.use(bodyParser.json())
 app.use(upload.any());
 
 app.use('/usersRegister', userRouter);
+app.use('/user', userRouter)
 app.use('/clients', clientRoutes);
 app.use('/clientaddress', clientAddressRoutes);
 app.use('/materialinward', materialInwardRoutes);

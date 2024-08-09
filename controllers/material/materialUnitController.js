@@ -1,6 +1,6 @@
 // controllers/materialUnitController.js
 
-const { MaterialUnit } = require('../models'); // Adjust path as necessary
+const { MaterialUnit } = require('../../models'); // Adjust path as necessary
 const Joi = require('joi');
 
 // Define Joi schema for validation

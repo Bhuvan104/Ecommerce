@@ -1,5 +1,5 @@
 'use strict';
-const { MaterialProcessDetails } = require('../models');
+const { MaterialProcessDetails } = require('../../models');
 const Joi = require('joi');
 
 // Define Joi schema for validation

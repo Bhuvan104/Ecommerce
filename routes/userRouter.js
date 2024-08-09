@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/', userController.createUser);
 router.get('/', userController.getAllUsers);
-
+router.get('/login', userController.LoginUser);
 router.get('/:userId', userController.getUser);
 
 // Delete a user by ID
