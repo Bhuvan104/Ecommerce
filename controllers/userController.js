@@ -3,6 +3,7 @@ const models = require('../models');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
 const userSchema = Joi.object({
   firstName: Joi.string().min(4).max(20).required(),

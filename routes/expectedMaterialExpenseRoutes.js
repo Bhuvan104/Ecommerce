@@ -1,5 +1,5 @@
 const express = require('express');
-const ExpectedMaterialExpenseController = require('../controllers/ExpectedMaterialExpenseController');
+const ExpectedMaterialExpenseController = require('../controllers/material/ExpectedMaterialExpenseController');
 
 const router = express.Router();
 

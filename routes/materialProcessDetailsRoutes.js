@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MaterialProcessDetailsController = require('../controllers/materialProcessDetailsController');
+const MaterialProcessDetailsController = require('../controllers/material/materialProcessDetailsController');
 
 // Define routes for MaterialProcessDetails
 router.post('/', MaterialProcessDetailsController.createMaterialProcessDetail);

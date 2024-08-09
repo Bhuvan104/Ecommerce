@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MaterialProcessController = require('../controllers/materialProcessController');
+const MaterialProcessController = require('../controllers/material/materialProcessController');
 
 
 // Create a new MaterialProcess

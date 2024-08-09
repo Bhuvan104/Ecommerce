@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MaterialFilingController = require('../controllers/materialFilingController');
+const MaterialFilingController = require('../controllers/material/materialFilingController');
 
 // Routes for MaterialFiling
 router.post('/', MaterialFilingController.createMaterialFiling);

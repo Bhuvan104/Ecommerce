@@ -1,5 +1,5 @@
 const express = require('express');
-const MaterialUnitController = require('../controllers/materialUnitController');
+const MaterialUnitController = require('../controllers/material/materialUnitController');
 const router = express.Router();
 
 

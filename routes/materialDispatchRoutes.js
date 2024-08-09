@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MaterialDispatchController = require('../controllers/materialDispatchController');
+const MaterialDispatchController = require('../controllers/material/materialDispatchController');
 
 // Routes for MaterialDispatch
 router.post('/', MaterialDispatchController.createMaterialDispatch);

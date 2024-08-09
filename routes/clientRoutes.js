@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const clientController = require('../controllers/clientController');
+const clientController = require('../controllers/client/clientController');
 // If you have any middleware for authentication or authorization, import it here
 // const authMiddleware = require('../middleware/authMiddleware');
 
