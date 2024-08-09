@@ -177,9 +177,14 @@ const UserController = {
       const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
         expiresIn: '1h', // Token expiration time
       });
-  
+      res.cookie('token', token, {
+        httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+        secure: process.env.NODE_ENV === 'production', // Set to true in production for HTTPS
+        maxAge: 60 * 60 * 1000, // Cookie expiration time in milliseconds (1 hour)
+        sameSite: 'strict', // Prevents CSRF attacks
+      });
       // Return the user details and token
-      return res.status(200).json({ user, token });
+      return res.status(200).json({ id: user.id, email: user.email , token });
     } catch (error) {
       console.error('Error logging in user:', error);
       return res.status(500).json({ error: 'Internal server error' });
