@@ -4,10 +4,10 @@ const InventoryDetailsController = require('../controllers/inventoryDetailsContr
 const router = express.Router();
 
 // Define routes
-router.post('/', InventoryDetailsController.createInventoryDetail);
-router.get('/', InventoryDetailsController.getAllInventoryDetails);
-router.get('/:id', InventoryDetailsController.getInventoryDetail);
-router.put('/:id', InventoryDetailsController.updateInventoryDetail);
-router.delete('/:id', InventoryDetailsController.deleteInventoryDetail);
+router.post('/', authMiddleware,InventoryDetailsController.createInventoryDetail);
+router.get('/',authMiddleware, InventoryDetailsController.getAllInventoryDetails);
+router.get('/:id',authMiddleware, InventoryDetailsController.getInventoryDetail);
+router.put('/:id',authMiddleware, InventoryDetailsController.updateInventoryDetail);
+router.delete('/:id',authMiddleware, InventoryDetailsController.deleteInventoryDetail);
 
 module.exports = router;

@@ -3,10 +3,10 @@ const ExpectedMaterialExpenseController = require('../controllers/material/Expec
 
 const router = express.Router();
 
-router.post('/', ExpectedMaterialExpenseController.createExpectedMaterialExpense);
-router.get('/', ExpectedMaterialExpenseController.getAllExpectedMaterialExpenses);
-router.get('/expenses/:id', ExpectedMaterialExpenseController.getExpectedMaterialExpense);
-router.put('/expenses/:id', ExpectedMaterialExpenseController.updateExpectedMaterialExpense);
-router.delete('/expenses/:id', ExpectedMaterialExpenseController.deleteExpectedMaterialExpense);
+router.post('/', authMiddleware,ExpectedMaterialExpenseController.createExpectedMaterialExpense);
+router.get('/', authMiddleware,ExpectedMaterialExpenseController.getAllExpectedMaterialExpenses);
+router.get('/expenses/:id',authMiddleware, ExpectedMaterialExpenseController.getExpectedMaterialExpense);
+router.put('/expenses/:id', authMiddleware,ExpectedMaterialExpenseController.updateExpectedMaterialExpense);
+router.delete('/expenses/:id', authMiddleware,ExpectedMaterialExpenseController.deleteExpectedMaterialExpense);
 
 module.exports = router;

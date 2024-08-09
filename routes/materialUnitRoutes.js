@@ -5,10 +5,10 @@ const router = express.Router();
 
 
 // Define routes
-router.post('/',MaterialUnitController.createMaterialUnit);
-router.get('/', MaterialUnitController.getAllMaterialUnits);
-router.get('/:id', MaterialUnitController.getMaterialUnit);
-router.put('/:id', MaterialUnitController.updateMaterialUnit);
-router.delete('/:id', MaterialUnitController.deleteMaterialUnit);
+router.post('/',authMiddleware,MaterialUnitController.createMaterialUnit);
+router.get('/',authMiddleware, MaterialUnitController.getAllMaterialUnits);
+router.get('/:id',authMiddleware, MaterialUnitController.getMaterialUnit);
+router.put('/:id',authMiddleware, MaterialUnitController.updateMaterialUnit);
+router.delete('/:id',authMiddleware, MaterialUnitController.deleteMaterialUnit);
 
 module.exports = router;

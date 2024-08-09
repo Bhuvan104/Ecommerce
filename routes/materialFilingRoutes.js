@@ -3,10 +3,10 @@ const router = express.Router();
 const MaterialFilingController = require('../controllers/material/materialFilingController');
 
 // Routes for MaterialFiling
-router.post('/', MaterialFilingController.createMaterialFiling);
-router.get('/', MaterialFilingController.getAllMaterialFilings);
-router.get('/:id', MaterialFilingController.getMaterialFiling);
-router.put('/:id', MaterialFilingController.updateMaterialFiling);
-router.delete('/:id', MaterialFilingController.deleteMaterialFiling);
+router.post('/',authMiddleware, MaterialFilingController.createMaterialFiling);
+router.get('/',authMiddleware, MaterialFilingController.getAllMaterialFilings);
+router.get('/:id',authMiddleware, MaterialFilingController.getMaterialFiling);
+router.put('/:id',authMiddleware, MaterialFilingController.updateMaterialFiling);
+router.delete('/:id',authMiddleware, MaterialFilingController.deleteMaterialFiling);
 
 module.exports = router;

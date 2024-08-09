@@ -2,7 +2,6 @@ const express=require('express')
 const multer = require('multer');
 const app=express()
 const cors = require('cors');
-const authMiddleware = require('./middleware/authMiddleware');
 app.use(cors());
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -38,16 +37,16 @@ app.use(upload.any());
 
 app.use('/usersRegister', userRouter);
 app.use('/user', userRouter)
-app.use('/clients',authMiddleware, clientRoutes);
-app.use('/clientaddress',authMiddleware, clientAddressRoutes);
-app.use('/materialinward',authMiddleware, materialInwardRoutes);
-app.use('/expected-material-expenses',authMiddleware, expectedMaterialExpenseRoutes);
-app.use('/material-units',authMiddleware, materialUnitRoutes);
-app.use('/material-routes',authMiddleware, materialRoutes);
-app.use('/material-process',authMiddleware, materialProcessRoutes);
-app.use('/material-processdetails',authMiddleware, materialProcessDetailsRoutes);
-app.use('/inventory-details',authMiddleware, inventoryDetailsRoutes);
-app.use('/purchase-details',authMiddleware, purchaseDetailsRoutes);
-app.use('/material-filings',authMiddleware, materialFilingRoutes);
-app.use('/material-dispatches',authMiddleware,materialDispatchRoutes);
+app.use('/clients', clientRoutes);
+app.use('/clientaddress', clientAddressRoutes);
+app.use('/materialinward', materialInwardRoutes);
+app.use('/expected-material-expenses', expectedMaterialExpenseRoutes);
+app.use('/material-units', materialUnitRoutes);
+app.use('/material-routes', materialRoutes);
+app.use('/material-process', materialProcessRoutes);
+app.use('/material-processdetails', materialProcessDetailsRoutes);
+app.use('/inventory-details', inventoryDetailsRoutes);
+app.use('/purchase-details', purchaseDetailsRoutes);
+app.use('/material-filings', materialFilingRoutes);
+app.use('/material-dispatches', materialDispatchRoutes);
 module.exports =app

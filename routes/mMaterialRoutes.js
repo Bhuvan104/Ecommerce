@@ -3,10 +3,10 @@ const MaterialController = require('../controllers/material/mMaterialController'
 
 const router = express.Router();
 
-router.post('/', MaterialController.createMaterial);
-router.get('/', MaterialController.getAllMaterials);
-router.get('/materials/:id', MaterialController.getMaterial);
-router.put('/materials/:id', MaterialController.updateMaterial);
-router.delete('/materials/:id', MaterialController.deleteMaterial);
+router.post('/',authMiddleware, MaterialController.createMaterial);
+router.get('/', authMiddleware,MaterialController.getAllMaterials);
+router.get('/materials/:id',authMiddleware, MaterialController.getMaterial);
+router.put('/materials/:id',authMiddleware, MaterialController.updateMaterial);
+router.delete('/materials/:id',authMiddleware, MaterialController.deleteMaterial);
 
 module.exports = router;

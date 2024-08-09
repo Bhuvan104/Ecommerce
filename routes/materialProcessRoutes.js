@@ -4,18 +4,18 @@ const MaterialProcessController = require('../controllers/material/materialProce
 
 
 // Create a new MaterialProcess
-router.post('/', MaterialProcessController.createMaterialProcess);
+router.post('/',authMiddleware, MaterialProcessController.createMaterialProcess);
 
 // Get all MaterialProcesses
-router.get('/', MaterialProcessController.getAllMaterialProcesses);
+router.get('/',authMiddleware, MaterialProcessController.getAllMaterialProcesses);
 
 // Get a MaterialProcess by ID
-router.get('/:id', MaterialProcessController.getMaterialProcess);
+router.get('/:id',authMiddleware, MaterialProcessController.getMaterialProcess);
 
 // Update a MaterialProcess by ID
-router.put('/:id', MaterialProcessController.updateMaterialProcess);
+router.put('/:id',authMiddleware, MaterialProcessController.updateMaterialProcess);
 
 // Delete a MaterialProcess by ID
-router.delete('/:id', MaterialProcessController.deleteMaterialProcess);
+router.delete('/:id',authMiddleware, MaterialProcessController.deleteMaterialProcess);
 
 module.exports = router;

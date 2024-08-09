@@ -3,10 +3,10 @@ const router = express.Router();
 const MaterialProcessDetailsController = require('../controllers/material/materialProcessDetailsController');
 
 // Define routes for MaterialProcessDetails
-router.post('/', MaterialProcessDetailsController.createMaterialProcessDetail);
-router.get('/', MaterialProcessDetailsController.getAllMaterialProcessDetails);
-router.get('/:id', MaterialProcessDetailsController.getMaterialProcessDetail);
-router.put('/:id', MaterialProcessDetailsController.updateMaterialProcessDetail);
-router.delete('/:id', MaterialProcessDetailsController.deleteMaterialProcessDetail);
+router.post('/',authMiddleware, MaterialProcessDetailsController.createMaterialProcessDetail);
+router.get('/', authMiddleware,MaterialProcessDetailsController.getAllMaterialProcessDetails);
+router.get('/:id',authMiddleware, MaterialProcessDetailsController.getMaterialProcessDetail);
+router.put('/:id',authMiddleware, MaterialProcessDetailsController.updateMaterialProcessDetail);
+router.delete('/:id',authMiddleware, MaterialProcessDetailsController.deleteMaterialProcessDetail);
 
 module.exports = router;
