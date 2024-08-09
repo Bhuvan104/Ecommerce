@@ -59,37 +59,76 @@ const MaterialInwardController = {
   async deleteMaterialInward(req, res) {
     try {
       const { id } = req.params;
-      const deletedCount = await MaterialInward.destroy({ where: { id } });
-      if (deletedCount === 0) {
-        return res.status(404).json({ error: 'Material Inward not found' });
+
+      const materialInward = await MaterialInward.findByPk(id);
+
+      if (!materialInward) {
+        return res.status(404).json({ error: 'MaterialInward not found' });
       }
-      return res.status(200).json({ message: 'Material Inward deleted successfully' });
+
+      // Delete image file if it exists
+      if (materialInward.dc_image) {
+        const imagePath = path.join(__dirname, '..', 'uploads', materialInward.dc_image);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+
+      await materialInward.destroy();
+      res.status(200).json({ message: 'MaterialInward deleted successfully' });
     } catch (error) {
-      console.error('Error deleting material inward:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Error deleting MaterialInward:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   },
+
 
   async updateMaterialInward(req, res) {
     try {
       const { id } = req.params;
-      const { error } = materialInwardSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ errors: error.details.map(detail => detail.message) });
+      const { client_id, quantity, received_date, estimated_dispatch_date, material_numbers, is_quantity_approved, rejection_reason, job_id, job_type, material_status, status } = req.body;
+      let dc_image = req.file ? req.file.filename : undefined;
+
+      const materialInward = await MaterialInward.findByPk(id);
+
+      if (!materialInward) {
+        return res.status(404).json({ error: 'MaterialInward not found' });
       }
 
-      const [updated] = await MaterialInward.update(req.body, { where: { id } });
-      if (updated === 0) {
-        return res.status(404).json({ error: 'Material Inward not found' });
+      if (dc_image) {
+        // Delete the old image if it exists
+        if (materialInward.dc_image) {
+          const oldImagePath = path.join(__dirname, '..', 'uploads', materialInward.dc_image);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
+      } else {
+        dc_image = materialInward.dc_image; // Keep the old image if no new image is provided
       }
 
-      const updatedMaterialInward = await MaterialInward.findByPk(id);
-      return res.status(200).json(updatedMaterialInward);
+      await materialInward.update({
+        client_id,
+        quantity,
+        dc_image,
+        received_date,
+        estimated_dispatch_date,
+        material_numbers,
+        is_quantity_approved,
+        rejection_reason,
+        job_id,
+        job_type,
+        material_status,
+        status
+      });
+
+      res.status(200).json({ message: 'MaterialInward updated successfully', data: materialInward });
     } catch (error) {
-      console.error('Error updating material inward:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Error updating MaterialInward:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-  },
+  }
+  
 };
 
 module.exports = MaterialInwardController;
